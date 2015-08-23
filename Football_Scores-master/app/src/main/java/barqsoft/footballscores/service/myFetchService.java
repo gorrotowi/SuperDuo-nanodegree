@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Vector;
 
@@ -48,8 +49,8 @@ public class myFetchService extends IntentService
     private void getData (String timeFrame)
     {
         //Creating fetch URL
-        final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
-        final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
+        final String BASE_URL = getString(R.string.base_url_football); //Base URL
+        final String QUERY_TIME_FRAME = getString(R.string.query_time_frame); //Time Frame parameter to determine days
         //final String QUERY_MATCH_DAY = "matchday";
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
@@ -62,8 +63,8 @@ public class myFetchService extends IntentService
         try {
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
-            m_connection.setRequestMethod("GET");
-            m_connection.addRequestProperty("X-Auth-Token",getString(R.string.api_key));
+            m_connection.setRequestMethod(getString(R.string.get_method));
+            m_connection.addRequestProperty(getString(R.string.header_property),getString(R.string.api_key));
             m_connection.connect();
 
             // Read the input stream into a String
@@ -90,7 +91,7 @@ public class myFetchService extends IntentService
         }
         catch (Exception e)
         {
-            Log.e(LOG_TAG,"Exception here" + e.getMessage());
+            Log.e(LOG_TAG,getString(R.string.log_exception_txt) + e.getMessage());
         }
         finally {
             if(m_connection != null)
@@ -104,7 +105,7 @@ public class myFetchService extends IntentService
                 }
                 catch (IOException e)
                 {
-                    Log.e(LOG_TAG,"Error Closing Stream");
+                    Log.e(LOG_TAG,getString(R.string.err_stream));
                 }
             }
         }
@@ -123,7 +124,7 @@ public class myFetchService extends IntentService
                 processJSONdata(JSON_data, getApplicationContext(), true);
             } else {
                 //Could not Connect
-                Log.d(LOG_TAG, "Could not connect to server.");
+                Log.d(LOG_TAG, getString(R.string.err_connect_server));
             }
         }
         catch(Exception e)
@@ -149,19 +150,19 @@ public class myFetchService extends IntentService
         final String EREDIVISIE = "404";
 
 
-        final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
-        final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/";
-        final String FIXTURES = "fixtures";
-        final String LINKS = "_links";
-        final String SOCCER_SEASON = "soccerseason";
-        final String SELF = "self";
-        final String MATCH_DATE = "date";
-        final String HOME_TEAM = "homeTeamName";
-        final String AWAY_TEAM = "awayTeamName";
-        final String RESULT = "result";
-        final String HOME_GOALS = "goalsHomeTeam";
-        final String AWAY_GOALS = "goalsAwayTeam";
-        final String MATCH_DAY = "matchday";
+        final String SEASON_LINK = getString(R.string.base_url_soccerseasons);
+        final String MATCH_LINK = getString(R.string.base_url_football);//"http://api.football-data.org/alpha/fixtures/";
+        final String FIXTURES = getString(R.string.fixtures);
+        final String LINKS = getString(R.string.links);
+        final String SOCCER_SEASON = getString(R.string.soccerseasons);
+        final String SELF = getString(R.string.self);
+        final String MATCH_DATE = getString(R.string.date);
+        final String HOME_TEAM = getString(R.string.hometeam);
+        final String AWAY_TEAM = getString(R.string.awayteam);
+        final String RESULT = getString(R.string.result);
+        final String HOME_GOALS = getString(R.string.goalteam);
+        final String AWAY_GOALS = getString(R.string.goalaway);
+        final String MATCH_DAY = getString(R.string.matchday);
 
         //Match data
         String League = null;
@@ -209,11 +210,11 @@ public class myFetchService extends IntentService
                     mDate = match_data.getString(MATCH_DATE);
                     mTime = mDate.substring(mDate.indexOf("T") + 1, mDate.indexOf("Z"));
                     mDate = mDate.substring(0,mDate.indexOf("T"));
-                    SimpleDateFormat match_date = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-                    match_date.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    SimpleDateFormat match_date = new SimpleDateFormat(getString(R.string.dateformat_seconds), Locale.getDefault());
+                    match_date.setTimeZone(TimeZone.getTimeZone(getString(R.string.time_zone)));
                     try {
                         Date parseddate = match_date.parse(mDate+mTime);
-                        SimpleDateFormat new_date = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
+                        SimpleDateFormat new_date = new SimpleDateFormat(getString(R.string.dateformat_min), Locale.getDefault());
                         new_date.setTimeZone(TimeZone.getDefault());
                         mDate = new_date.format(parseddate);
                         mTime = mDate.substring(mDate.indexOf(":") + 1);
@@ -222,7 +223,7 @@ public class myFetchService extends IntentService
                         if(!isReal){
                             //This if statement changes the dummy data's date to match our current date range.
                             Date fragmentdate = new Date(System.currentTimeMillis()+((i-2)*86400000));
-                            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat mformat = new SimpleDateFormat(getString(R.string.dateformat), Locale.getDefault());
                             mDate=mformat.format(fragmentdate);
                         }
                     }
