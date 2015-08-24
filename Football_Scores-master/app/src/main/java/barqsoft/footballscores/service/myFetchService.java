@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -246,7 +247,16 @@ public class myFetchService extends IntentService {
 
                     values.add(match_values);
                     Log.e("values", match_values.toString());
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -1);
                     if (mDate.equals(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date())) && !Home_goals.equals("-1")) {
+                        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.football_widget);
+                        remoteViews.setTextViewText(R.id.txtWidgetHome, Home);
+                        remoteViews.setTextViewText(R.id.txtWidgetAway, Away);
+                        remoteViews.setTextViewText(R.id.txtWidgetScore, Home_goals + " - " + Away_goals);
+                        remoteViews.setTextViewText(R.id.txtWidgetTime, mDate);
+                        FootballWidget.pushWidgetUpdate(getApplicationContext(), remoteViews);
+                    } else if (mDate.equals(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(cal.getTime())) && !Home_goals.equals("-1")) {
                         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.football_widget);
                         remoteViews.setTextViewText(R.id.txtWidgetHome, Home);
                         remoteViews.setTextViewText(R.id.txtWidgetAway, Away);
