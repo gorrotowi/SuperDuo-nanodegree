@@ -32,4 +32,5 @@
 
     <string name="err_barcode_lecture">The bar code is incorrect, please try again</string>
     <string name="err_connection">Verify yout internet connection</string>
+    <string name="general_err">Something happen, please try again</string>
 </resources>
