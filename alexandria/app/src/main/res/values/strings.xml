@@ -30,6 +30,6 @@
     The original version of this app was built by Sascha Jaschke, and a modified version is given to students in the Udacity Android Nanodegree program. </string>
     <string name="title_activity_scanner_book">ScannerBook</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="err_barcode_lecture">The bar code is incorrect, please try again</string>
+    <string name="err_connection">Verify yout internet connection</string>
 </resources>
