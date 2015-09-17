@@ -32,7 +32,7 @@
 
         During the off season, fake data will be added to the app.
     </string>
-    <string name="api_key" translatable="false">ff45</string>
+    <string name="api_key" translatable="false">ff451c1a5f854613b7d3a6de5e23d607</string>
     <string name="base_url_football" translatable="false">http://api.football-data.org/alpha/fixtures/</string>
     <string name="base_url_soccerseasons" translatable="false">http://api.football-data.org/alpha/soccerseasons/</string>
     <string name="fixtures" translatable="false">fixtures</string>
